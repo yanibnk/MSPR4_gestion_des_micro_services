@@ -1,9 +1,9 @@
 const amqp = require('amqplib');
 const Commande = require('../models/Commande');
-
+const rabbitUrl = process.env.AMQP_URL || 'amqp://admin:admin@rabbitmq:5672';
 const startProduitConsumer = async () => {
   try {
-    const connection = await amqp.connect('amqp://admin:admin@rabbitmq:5672');
+    const connection = await amqp.connect(rabbitUrl);
     const channel = await connection.createChannel();
     const queue = 'produits';
 
