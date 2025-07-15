@@ -19,10 +19,11 @@ app.get('/', (req, res) => {
   res.send('API Produit opérationnelle ✔️');
 });
 
-const PORT = process.env.PORT || 3003;
-app.listen(PORT, () => {
-  console.log(`🚀 Serveur Produit lancé sur http://localhost:${PORT}`);
-});
+// const PORT = process.env.PORT || 3003;
+// app.listen(PORT, () => {
+//   console.log(`🚀 Serveur Produit lancé sur http://localhost:${PORT}`);
+// });
+
 const { connecterRabbitMQ } = require('./rabbitmq/publisher');
 connecterRabbitMQ(); // Connexion RabbitMQ
 
