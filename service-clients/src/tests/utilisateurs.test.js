@@ -1,6 +1,6 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
-const app = require('../serveur'); // Assure-toi que ce fichier exporte l’app Express
+const { app, fermerRabbitMQ } = require('../serveur'); // importer app et fermerRabbitMQ
 const Utilisateur = require('../models/utilisateur');
 
 let tokenAdmin = '';
@@ -50,6 +50,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await fermerRabbitMQ();  // fermer proprement RabbitMQ après les tests
   await mongoose.disconnect();
 });
 
