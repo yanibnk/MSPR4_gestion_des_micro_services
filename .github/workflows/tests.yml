@@ -22,8 +22,13 @@ jobs:
         with:
           node-version: '18' # 👈 Version de Node.js
 
+      - name: Debug directory content
+        working-directory: ./${{ matrix.service }}
+        run: ls -al
+
+
       - name: Install dependencies
-        working-directory: ./${{ matrix.service }}/package.json
+        working-directory: ./${{ matrix.service }}
         run: npm install
 
       - name: Run tests
