@@ -30,10 +30,13 @@ jobs:
       - name: Install dependencies
         working-directory: ./${{ matrix.service }}
         run: npm install
+      - name: Fix Jest permissions
+        working-directory: ./${{ matrix.service }}
+        run: chmod +x ./node_modules/.bin/jest
 
       - name: Run tests
         working-directory: ./${{ matrix.service }}
-        run: npx jest
+        run: npm test
 
       - name: Build Docker image
         working-directory: ./${{ matrix.service }}
