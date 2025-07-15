@@ -1,0 +1,32 @@
+### GET tous les utilisateurs
+GET http://localhost:3001/utilisateurs
+
+### GET un utilisateur par ID
+GET http://localhost:3001/utilisateurs/
+
+### POST créer un utilisateur
+POST http://localhost:3001/utilisateurs
+Content-Type: application/json
+
+{
+  "nom": "Amine",
+  "email": "amine@example.com",
+  "motdepasse": "pass1234",
+  "type": "admin",
+  "statut": "actif"
+}
+
+### PUT modifier un utilisateur
+PUT http://localhost:3001/utilisateurs/ID_ICI
+Content-Type: application/json
+
+{
+  "nom": "Amine Modifié",
+  "email": "aminemod@example.com",
+  "motdepasse": "passModif",
+  "type": "client",
+  "statut": "bloqué"
+}
+
+### DELETE supprimer un utilisateur
+DELETE http://localhost:3001/utilisateurs/ID_ICI
