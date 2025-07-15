@@ -23,7 +23,7 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        working-directory: ./${{ matrix.service }}
+        working-directory: ./${{ matrix.service }}/package.json
         run: npm install
 
       - name: Run tests
