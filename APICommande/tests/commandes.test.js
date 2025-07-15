@@ -47,7 +47,13 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await mongoose.connection.close();
+  await mongoose.disconnect();
+  if (global.amqpChannel) {
+    await global.amqpChannel.close();
+  }
+  if (global.amqpConnection) {
+    await global.amqpConnection.close();
+  }
 });
 
 describe('🛒 Commandes API', () => {
