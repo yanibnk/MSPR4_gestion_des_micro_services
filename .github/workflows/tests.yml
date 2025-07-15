@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [service-clients, APICommande, APIProduit]
+        service: [service-clients, apicommande, apiproduit]
 
     services:
       rabbitmq:
@@ -58,7 +58,7 @@ jobs:
 
       - name: Build Docker image
         working-directory: ./${{ matrix.service }}
-        run: docker build -t ${{ matrix.service && matrix.service.toLowerCase }}:latest .
+        run: docker build -t ${{ matrix.service }}:latest .
 
       # Uncomment this block if you want to push images to Docker Hub
       # - name: Log in to Docker Hub

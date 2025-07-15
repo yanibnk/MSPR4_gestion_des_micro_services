@@ -10,27 +10,25 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ Connexion MongoDB réussie !'))
   .catch(err => console.error('❌ Erreur de connexion MongoDB :', err));
 
-// Import des routes
+// Routes
 const produitsRoutes = require('./routes/produits');    
 app.use('/produits', produitsRoutes);
-
 
 app.get('/', (req, res) => {
   res.send('API Produit opérationnelle ✔️');
 });
 
-// const PORT = process.env.PORT || 3003;
-// app.listen(PORT, () => {
-//   console.log(`🚀 Serveur Produit lancé sur http://localhost:${PORT}`);
-// });
-
+// Connexion RabbitMQ
 const { connecterRabbitMQ } = require('./rabbitmq/publisher');
-connecterRabbitMQ(); // Connexion RabbitMQ
+connecterRabbitMQ();
 
+// Exporte app pour les tests
 module.exports = app;
-// Exporter l'app pour les tests
+
+// ✅ Lancement du serveur SEULEMENT si le fichier est exécuté directement
+const PORT = process.env.PORT || 3003;
 if (require.main === module) {
   app.listen(PORT, () => {
-    console.log(`🚀 Serveur API Commande lancé sur le port ${PORT}`);
+    console.log(`🚀 Serveur Produit lancé sur http://localhost:${PORT}`);
   });
 }
