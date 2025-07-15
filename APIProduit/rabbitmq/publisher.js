@@ -2,9 +2,11 @@ const amqp = require('amqplib');
 
 let channel;
 
+const rabbitUrl = process.env.AMQP_URL || 'amqp://admin:admin@rabbitmq:5672';
+
 const connecterRabbitMQ = async () => {
   try {
-    const connection = await amqp.connect('amqp://admin:admin@rabbitmq:5672');
+    const connection = await amqp.connect(rabbitUrl);
     channel = await connection.createChannel();
     await channel.assertQueue('produits');
     console.log('✅ [Produits] Connecté à RabbitMQ (publisher)');

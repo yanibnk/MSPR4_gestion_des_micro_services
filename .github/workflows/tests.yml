@@ -11,7 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [service-clients, APICommande, APIProduit] # 👈 Nom des dossiers
+        service: [service-clients, APICommande, APIProduit]
+
+    services:
+      rabbitmq:
+        image: rabbitmq:3-management
+        ports:
+          - 5672:5672
+          - 15672:15672
+        env:
+          RABBITMQ_DEFAULT_USER: admin
+          RABBITMQ_DEFAULT_PASS: admin
+        options: >-
+          --health-cmd "rabbitmq-diagnostics -q ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout repo
@@ -20,30 +35,32 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # 👈 Version de Node.js
+          node-version: '18'
 
       - name: Debug directory content
         working-directory: ./${{ matrix.service }}
         run: ls -al
 
-
       - name: Install dependencies
         working-directory: ./${{ matrix.service }}
         run: npm install
+
       - name: Fix Jest permissions
         working-directory: ./${{ matrix.service }}
         run: chmod +x ./node_modules/.bin/jest
 
       - name: Run tests
         working-directory: ./${{ matrix.service }}
+        env:
+          AMQP_URL: amqp://admin:admin@localhost:5672
+          NODE_ENV: test
         run: npm test
 
       - name: Build Docker image
         working-directory: ./${{ matrix.service }}
-        run: |
-          docker build -t ${{ matrix.service }}:latest .
+        run: docker build -t ${{ matrix.service }}:latest .
 
-      # (Optionnel) Push to Docker Hub
+      # Uncomment this block if you want to push images to Docker Hub
       # - name: Log in to Docker Hub
       #   run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
