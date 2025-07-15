@@ -4,7 +4,8 @@
   "main": "src/serveur.js",
   "scripts": {
     "demarrer": "nodemon src/serveur.js",
-    "test": "jest"
+    "test": "jest --detectOpenHandles --forceExit",
+    "test:watch": "jest --watchAll --detectOpenHandles --forceExit"
   },
   "keywords": [],
   "author": "",
