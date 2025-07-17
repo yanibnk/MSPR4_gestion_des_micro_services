@@ -1,25 +1,31 @@
 name: Build
-on: push
+
+on: 
+  push:
+    branches:
+      - main  # ou remplace par la branche que tu veux surveiller
 
 jobs:
-
   sonarqube:
-   name: SonarQube Scan
-   runs-on: ubuntu-latest
-   steps:
-    - name: Checkout sorce code 
-      uses: action/checkout@v2
-      with:
-       fetch-depth: 0
-    - name: Setup Node.js
-      uses: actions/srtup-node@v1
-      with: 
-       node-version: '18'
-    - name: Install dependencies
-      run: yarn install
+    name: SonarQube Scan
+    runs-on: ubuntu-latest
 
-    - name: Sonarqube Scan
-      uses: sonarsource/sonarqube-scan-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}
-        SONAR_HOST_URL: ${{secrets.SONAR_HOST_URL}}
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # nécessaire pour SonarQube
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
